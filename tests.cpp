@@ -4,119 +4,137 @@
 
 //#define CATCH_CONFIG_MAIN // defines main() automatically
 #include "lib/catch.hpp"
-#include "sudoku.hpp"
+#include "list.hpp"
 #include <string.h>
+#include <stdio.h>
 
 
 // =====================
-// Sudoku Testcases
+// List Testcases
 // ---------------------
 
-TEST_CASE("Test1", "Sudoku")
+TEST_CASE("Test1", "init")
 {
-    int result = 0;
-    int actual[SIZE][SIZE];
-    int initial[SIZE][SIZE] = {
-        {0, 1, 0, 0, 0, 9, 0, 5, 0},
-        {0, 9, 0, 0, 0, 0, 4, 8, 0},
-        {0, 6, 0, 1, 0, 4, 0, 0, 0},
-        {0, 0, 5, 0, 0, 0, 9, 3, 0},
-        {0, 0, 0, 7, 0, 2, 0, 0, 0},
-        {0, 2, 1, 0, 0, 0, 8, 0, 0},
-        {4, 0, 0, 0, 8, 0, 6, 0, 9},
-        {0, 0, 0, 0, 6, 0, 5, 0, 3},
-        {2, 0, 0, 0, 3, 0, 0, 0, 0},
-    };
-    int expected[SIZE][SIZE] = {
-        {3, 1, 4, 8, 2, 9, 7, 5, 0},
-        {0, 9, 0, 0, 0, 0, 4, 8, 0},
-        {0, 6, 0, 1, 0, 4, 0, 0, 0},
-        {0, 0, 5, 0, 0, 0, 9, 3, 0},
-        {0, 0, 0, 7, 0, 2, 0, 0, 0},
-        {0, 2, 1, 0, 0, 0, 8, 0, 0},
-        {4, 0, 0, 0, 8, 0, 6, 0, 9},
-        {0, 0, 0, 0, 6, 0, 5, 0, 3},
-        {2, 0, 0, 0, 3, 0, 0, 0, 0},
-    };
-    init(initial);
-    result = solve(0,0);
-    getResult(actual);
-    if(memcmp(actual, expected, sizeof(initial)) == 0){
-        INFO("Solution helper: if your Sudoku Solver gets 'stuck' in the first row, consider using the remove function at some point in your algorithm.");
-        REQUIRE(memcmp(actual, expected, sizeof(initial)) != 0);
+    list *list = l_init();
+    INFO("Test Case for l_init: pointer may not be NULL. All variables of the struct need to be initialized.");
+    REQUIRE(list != nullptr);
+    REQUIRE(list->count == 0);
+    REQUIRE(list->head == nullptr);
+}
+
+TEST_CASE("Test2", "insert")
+{
+    list *list = l_init();
+    INFO("Test Case for l_insert.");
+    REQUIRE(list != nullptr);
+    l_insert(list, (char*)"wonderland");
+    l_insert(list, (char*)"rabbit");
+    l_insert(list, (char*)"queen of hearts");
+    REQUIRE(list->head != nullptr);
+    REQUIRE(list->count == 3);
+}
+
+TEST_CASE("Test3", "delete")
+{
+    list *list = l_init();
+    INFO("Test Case for l_delete.");
+    REQUIRE(list != nullptr);
+    l_insert(list, (char*)"wonderland");
+    l_insert(list, (char*)"rabbit");
+    l_insert(list, (char*)"queen of hearts");
+    l_delete(list, (char*)"queen of hearts");
+    REQUIRE(list->head != nullptr);
+    REQUIRE(list->count == 2);
+    REQUIRE(strcmp(list->head->word, "rabbit") == 0);
+}
+
+TEST_CASE("Test4", "find")
+{
+    list *list = l_init();
+    element *tmp;
+    INFO("Test Case for l_find.");
+    REQUIRE(list != nullptr);
+    l_insert(list, (char*)"wonderland");
+    l_insert(list, (char*)"rabbit");
+    l_insert(list, (char*)"queen of hearts");
+    tmp = l_find(list, (char*)"queen of hearts");
+    REQUIRE(list->head != nullptr);
+    REQUIRE(list->count == 3);
+    REQUIRE(tmp != nullptr);
+    REQUIRE(strcmp(tmp->word, "queen of hearts") == 0);
+}
+
+TEST_CASE("Test5", "readFile")
+{
+    list* list = l_init();
+    element *tmp;
+    INFO("Test Case for readFile.");
+    REQUIRE(list != nullptr);
+    
+    if(!readFile(list, (char*)"alice.txt")){
+        tmp = l_find(list, (char*)"project");
+        REQUIRE((tmp->count >= 79 && tmp->count <= 83));
     }
-    INFO("Test Case: solve hasn't found a solution yet.");
-    REQUIRE(result==1);
 }
 
-
-TEST_CASE("Test2", "Sudoku")
+TEST_CASE("Test6", "frequencyCount")
 {
-    int result = 0;
-    int actual[SIZE][SIZE];
-    int initial[SIZE][SIZE] = {
-        {0, 1, 0, 0, 0, 9, 0, 5, 0},
-        {0, 9, 0, 0, 0, 0, 4, 8, 0},
-        {0, 6, 0, 1, 0, 4, 0, 0, 0},
-        {0, 0, 5, 0, 0, 0, 9, 3, 0},
-        {0, 0, 0, 7, 0, 2, 0, 0, 0},
-        {0, 2, 1, 0, 0, 0, 8, 0, 0},
-        {4, 0, 0, 0, 8, 0, 6, 0, 9},
-        {0, 0, 0, 0, 6, 0, 5, 0, 3},
-        {2, 0, 0, 0, 3, 0, 0, 0, 0},
-    };
-    int expected[SIZE][SIZE] = {
-        {3, 1, 4, 8, 7, 9, 2, 5, 6},
-        {5, 9, 7, 3, 2, 6, 4, 8, 1},
-        {8, 6, 2, 1, 5, 4, 3, 9, 7},
-        {7, 4, 5, 6, 1, 8, 9, 3, 2},
-        {9, 3, 8, 7, 4, 2, 1, 6, 5},
-        {6, 2, 1, 5, 9, 3, 8, 7, 4},
-        {4, 7, 3, 2, 8, 5, 6, 1, 9},
-        {1, 8, 9, 4, 6, 7, 5, 2, 3},
-        {2, 5, 6, 9, 3, 1, 7, 4, 8},
-    };
-    init(initial);
-    result = solve(0,0);
-    getResult(actual);
-    INFO("Test Case: valid Sudoku board failed.");
-    REQUIRE(memcmp(actual, expected, sizeof(initial)) == 0);
-    INFO("Test Case: return value not correct.");
-    REQUIRE(result == 1);
+    list* list = l_init();
+    int frequencies[26] = {0};
+    INFO("Test Case for frequencyCount.");
+    REQUIRE(list != nullptr);
+    
+    if(!readFile(list, (char*)"alice.txt")){
+        frequencyCount(list, frequencies);
+        /* for debugging purposes
+        for(int i=0; i < 26; i++){
+            printf("%c: %i\n", i+97, frequencies[i]);
+        }
+        */
+        REQUIRE(frequencies[0] >= 9400);
+        REQUIRE(frequencies[1] >= 1650);
+        REQUIRE(frequencies[25] >= 78);
+    }
 }
 
-
-TEST_CASE("Test3", "Sudoku")
+TEST_CASE("Test7", "letterCount")
 {
-    int result = 0;
-    int actual[SIZE][SIZE];
-    int initial[SIZE][SIZE] = {
-        {0, 1, 0, 0, 0, 9, 0, 5, 0},
-        {0, 9, 0, 0, 0, 0, 4, 8, 0},
-        {0, 6, 0, 1, 0, 4, 0, 0, 0},
-        {0, 0, 5, 0, 0, 0, 9, 3, 0},
-        {0, 0, 0, 7, 0, 2, 0, 0, 0},
-        {0, 2, 1, 0, 0, 0, 8, 0, 0},
-        {4, 0, 0, 0, 8, 6, 6, 0, 9},
-        {0, 0, 0, 0, 6, 0, 5, 0, 3},
-        {2, 0, 0, 0, 3, 0, 0, 0, 0},
-    };
-    int expected[SIZE][SIZE] = {
-        {0, 1, 0, 0, 0, 9, 0, 5, 0},
-        {0, 9, 0, 0, 0, 0, 4, 8, 0},
-        {0, 6, 0, 1, 0, 4, 0, 0, 0},
-        {0, 0, 5, 0, 0, 0, 9, 3, 0},
-        {0, 0, 0, 7, 0, 2, 0, 0, 0},
-        {0, 2, 1, 0, 0, 0, 8, 0, 0},
-        {4, 0, 0, 0, 8, 6, 6, 0, 9},
-        {0, 0, 0, 0, 6, 0, 5, 0, 3},
-        {2, 0, 0, 0, 3, 0, 0, 0, 0},
-    };
-    init(initial);
-    result = solve(0,0);
-    getResult(actual);
-    INFO("Test Case: invalid Sudoku board failed.");
-    REQUIRE(memcmp(actual, expected, sizeof(initial)) == 0);
-    INFO("Test Case: return value not correct.");
-    REQUIRE(result == 0);
+    list* list = l_init();
+    int total = 0;
+    INFO("Test Case for letterCount.");
+    REQUIRE(list != nullptr);
+    
+    if(!readFile(list, (char*)"alice.txt")){
+        total = letterCount(list);
+        REQUIRE(total >= 117420);
+    }
 }
+
+TEST_CASE("Test8", "wordCount")
+{
+    list* list = l_init();
+    int total = 0;
+    INFO("Test Case for wordCount.");
+    REQUIRE(list != nullptr);
+    
+    if(!readFile(list, (char*)"alice.txt")){
+        total = wordCount(list);
+        REQUIRE(total >= 28059);
+    }
+}
+
+TEST_CASE("Test9", "deleteWords")
+{
+    list* list = l_init();
+    element *tmp = nullptr;
+    INFO("Test Case for deleteWords with a frequency less than 100.");
+    REQUIRE(list != nullptr);
+    
+    if(!readFile(list, (char*)"alice.txt")){
+        deleteWords(list, 100);
+        REQUIRE(list->count < 50);
+        tmp = l_find(list, (char*)"wondered");
+        REQUIRE(tmp == nullptr);
+    }
+}
+

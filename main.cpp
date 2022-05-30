@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_RUNNER
 #define TEST 1 // Always change to 1 before your final submission to Github Classroom.
 #include "lib/catch.hpp"
-#include "sudoku.hpp"
+#include "list.hpp"
 #include <stdlib.h>
 
 // DO NOT CHANGE THIS METHOD
@@ -9,6 +9,7 @@ int runCatchTests(int argc, char* const argv[])
 {
     return Catch::Session().run(argc, argv);
 }
+
 
 /*
  Test your C knowledge in the main function, but leave the very last lines of code unchanged. Also, DON'T add any additional return statements.
@@ -19,7 +20,12 @@ int main(int argc, char* const argv[] ){
     // ---------------------
     // Test your implemenation here:
     
-    
+    list* list = l_init();
+    if(list){
+        if(!readFile(list, (char*)"alice.txt")){
+            // Do some statistics...
+        }
+    }
   
     
     // DO NOT CHANGE CODE AFTER THIS LINE
