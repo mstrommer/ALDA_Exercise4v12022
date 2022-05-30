@@ -15,9 +15,9 @@ int runCatchTests(int argc, char* const argv[])
  */
 int main(int argc, char* const argv[] ){
     // =====================
-    // SUDOKU
+    // List
     // ---------------------
-    // Test your implemenation here (game[][], init, solve, print):
+    // Test your implemenation here:
     
     
   
