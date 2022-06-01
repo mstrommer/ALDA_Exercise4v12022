@@ -73,6 +73,7 @@ TEST_CASE("Test5", "readFile")
     
     if(!readFile(list, (char*)"alice.txt")){
         tmp = l_find(list, (char*)"project");
+        REQUIRE(tmp != nullptr);
         REQUIRE((tmp->count >= 79 && tmp->count <= 83));
     }
 }
@@ -133,6 +134,7 @@ TEST_CASE("Test9", "deleteWords")
     if(!readFile(list, (char*)"alice.txt")){
         deleteWords(list, 100);
         REQUIRE(list->count < 50);
+        REQUIRE(list->count > 1);
         tmp = l_find(list, (char*)"wondered");
         REQUIRE(tmp == nullptr);
     }
