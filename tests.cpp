@@ -122,7 +122,7 @@ TEST_CASE("Test8", "wordCount")
     REQUIRE(readFile(list, (char*)"alice.txt") == 0);
     INFO("File opened correctly.");
     total = wordCount(list);
-    REQUIRE(total >= 28059);
+    REQUIRE(total >= 28000);
 }
 
 TEST_CASE("Test9", "deleteWords")
