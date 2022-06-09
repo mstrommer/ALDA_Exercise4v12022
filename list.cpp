@@ -32,7 +32,7 @@ int readFile(list* list, char* filename){
     FILE * file;
     char line[300];        // sicher lang genug fuer eine Zeile
     
-    file = fopen("alice.txt", "r");
+    file = fopen(filename, "r");
     
     if (!file) // bei Fehler wird NULL zurueckgegeben
     {
