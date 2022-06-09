@@ -70,12 +70,12 @@ TEST_CASE("Test5", "readFile")
     element *tmp;
     INFO("Test Case for readFile.");
     REQUIRE(list != nullptr);
-    
-    if(!readFile(list, (char*)"alice.txt")){
-        tmp = l_find(list, (char*)"project");
-        REQUIRE(tmp != nullptr);
-        REQUIRE((tmp->count >= 79 && tmp->count <= 83));
-    }
+    INFO("Testing if file could be opened.");
+    REQUIRE(readFile(list, (char*)"alice.txt") == 0);
+    INFO("File opened correctly.");
+    tmp = l_find(list, (char*)"project");
+    REQUIRE(tmp != nullptr);
+    REQUIRE((tmp->count >= 79 && tmp->count <= 83));
 }
 
 TEST_CASE("Test6", "frequencyCount")
@@ -85,17 +85,18 @@ TEST_CASE("Test6", "frequencyCount")
     INFO("Test Case for frequencyCount.");
     REQUIRE(list != nullptr);
     
-    if(!readFile(list, (char*)"alice.txt")){
-        frequencyCount(list, frequencies);
-        /* for debugging purposes
-        for(int i=0; i < 26; i++){
-            printf("%c: %i\n", i+97, frequencies[i]);
-        }
-        */
-        REQUIRE(frequencies[0] >= 9400);
-        REQUIRE(frequencies[1] >= 1650);
-        REQUIRE(frequencies[25] >= 78);
+    INFO("Testing if file could be opened.");
+    REQUIRE(readFile(list, (char*)"alice.txt") == 0);
+    INFO("File opened correctly.");
+    frequencyCount(list, frequencies);
+    /* for debugging purposes
+    for(int i=0; i < 26; i++){
+        printf("%c: %i\n", i+97, frequencies[i]);
     }
+    */
+    REQUIRE(frequencies[0] >= 9400);
+    REQUIRE(frequencies[1] >= 1650);
+    REQUIRE(frequencies[25] >= 78);
 }
 
 TEST_CASE("Test7", "letterCount")
@@ -104,11 +105,11 @@ TEST_CASE("Test7", "letterCount")
     int total = 0;
     INFO("Test Case for letterCount.");
     REQUIRE(list != nullptr);
-    
-    if(!readFile(list, (char*)"alice.txt")){
-        total = letterCount(list);
-        REQUIRE(total >= 117420);
-    }
+    INFO("Testing if file could be opened.");
+    REQUIRE(readFile(list, (char*)"alice.txt") == 0);
+    INFO("File opened correctly.");
+    total = letterCount(list);
+    REQUIRE(total >= 117420);
 }
 
 TEST_CASE("Test8", "wordCount")
@@ -117,11 +118,11 @@ TEST_CASE("Test8", "wordCount")
     int total = 0;
     INFO("Test Case for wordCount.");
     REQUIRE(list != nullptr);
-    
-    if(!readFile(list, (char*)"alice.txt")){
-        total = wordCount(list);
-        REQUIRE(total >= 28059);
-    }
+    INFO("Testing if file could be opened.");
+    REQUIRE(readFile(list, (char*)"alice.txt") == 0);
+    INFO("File opened correctly.");
+    total = wordCount(list);
+    REQUIRE(total >= 28059);
 }
 
 TEST_CASE("Test9", "deleteWords")
@@ -130,13 +131,14 @@ TEST_CASE("Test9", "deleteWords")
     element *tmp = nullptr;
     INFO("Test Case for deleteWords with a frequency less than 100.");
     REQUIRE(list != nullptr);
-    
-    if(!readFile(list, (char*)"alice.txt")){
-        deleteWords(list, 100);
-        REQUIRE(list->count < 50);
-        REQUIRE(list->count > 1);
-        tmp = l_find(list, (char*)"wondered");
-        REQUIRE(tmp == nullptr);
-    }
+    INFO("Testing if file could be opened.");
+    REQUIRE(readFile(list, (char*)"alice.txt") == 0);
+    INFO("File opened correctly.");
+    deleteWords(list, 100);
+    REQUIRE(list->count < 50);
+    REQUIRE(list->count > 1);
+    tmp = l_find(list, (char*)"wondered");
+    REQUIRE(tmp == nullptr);
+
 }
 
