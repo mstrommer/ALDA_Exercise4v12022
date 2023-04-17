@@ -139,6 +139,35 @@ TEST_CASE("Test9", "deleteWords")
     REQUIRE(list->count > 1);
     tmp = l_find(list, (char*)"wondered");
     REQUIRE(tmp == nullptr);
-
 }
 
+TEST_CASE("Test10", "deleteInMiddle")
+{
+    list *list = l_init();
+    INFO("Test Case for l_delete.");
+    REQUIRE(list != nullptr);
+    l_insert(list, (char*)"wonderland");
+    l_insert(list, (char*)"rabbit");
+    l_insert(list, (char*)"queen of hearts");
+    l_insert(list, (char*)"alice");
+    l_insert(list, (char*)"jabberwocky");
+    l_delete(list, (char*)"queen of hearts");
+    REQUIRE(list->head != nullptr);
+    REQUIRE(list->count == 4);
+    REQUIRE(strcmp(list->head->word, "jabberwocky") == 0);
+}
+
+TEST_CASE("Test11", "find2")
+{
+    list *list = l_init();
+    element *tmp;
+    INFO("Second Test Case for l_find.");
+    REQUIRE(list != nullptr);
+    l_insert(list, (char*)"wonderland");
+    l_insert(list, (char*)"rabbit");
+    l_insert(list, (char*)"queen of hearts");
+    tmp = l_find(list, (char*)"queen of love");
+    REQUIRE(list->head != nullptr);
+    REQUIRE(list->count == 3);
+    REQUIRE(tmp == nullptr);
+}
